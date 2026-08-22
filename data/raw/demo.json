@@ -1,0 +1,52 @@
+{
+  "countries": [
+    {"id":"IN","name":"India","risk":48,"stability":58,"conflict":32,"sanctions":12,"lat":20.6,"lng":78.9},
+    {"id":"SA","name":"Saudi Arabia","risk":62,"stability":46,"conflict":54,"sanctions":10,"lat":23.9,"lng":45.1},
+    {"id":"AE","name":"United Arab Emirates","risk":51,"stability":61,"conflict":35,"sanctions":8,"lat":24.3,"lng":54.4},
+    {"id":"IR","name":"Iran","risk":82,"stability":28,"conflict":74,"sanctions":88,"lat":32.4,"lng":53.7},
+    {"id":"IQ","name":"Iraq","risk":73,"stability":34,"conflict":69,"sanctions":22,"lat":33.2,"lng":43.7},
+    {"id":"US","name":"United States","risk":29,"stability":76,"conflict":18,"sanctions":6,"lat":37.1,"lng":-95.7},
+    {"id":"CN","name":"China","risk":56,"stability":55,"conflict":38,"sanctions":42,"lat":35.9,"lng":104.2},
+    {"id":"RU","name":"Russia","risk":79,"stability":31,"conflict":78,"sanctions":76,"lat":61.5,"lng":105.3},
+    {"id":"SG","name":"Singapore","risk":24,"stability":84,"conflict":8,"sanctions":4,"lat":1.35,"lng":103.8},
+    {"id":"DE","name":"Germany","risk":27,"stability":79,"conflict":12,"sanctions":5,"lat":51.2,"lng":10.4},
+    {"id":"TR","name":"Türkiye","risk":59,"stability":44,"conflict":48,"sanctions":18,"lat":38.9,"lng":35.2},
+    {"id":"NL","name":"Netherlands","risk":22,"stability":86,"conflict":7,"sanctions":3,"lat":52.1,"lng":5.3}
+  ],
+  "ports": [
+    {"id":"JEA","name":"Jebel Ali","country":"AE","lat":25.0,"lng":55.1,"capacity":92},
+    {"id":"KHP","name":"Kharg Island","country":"IR","lat":29.2,"lng":50.3,"capacity":68},
+    {"id":"MUM","name":"Nhava Sheva","country":"IN","lat":18.9,"lng":72.9,"capacity":74},
+    {"id":"SIN","name":"Singapore","country":"SG","lat":1.3,"lng":103.8,"capacity":96},
+    {"id":"RTM","name":"Rotterdam","country":"NL","lat":51.9,"lng":4.5,"capacity":90},
+    {"id":"HOU","name":"Houston","country":"US","lat":29.7,"lng":-95.0,"capacity":82},
+    {"id":"DMM","name":"Dammam","country":"SA","lat":26.4,"lng":50.1,"capacity":61}
+  ],
+  "suppliers": [
+    {"id":"S-ARAB","name":"Gulf Energy Trading","country":"SA","commodity":"Crude oil","capacity":520,"reliability":78},
+    {"id":"S-EMIR","name":"Emirates Petrochem","country":"AE","commodity":"Refined fuels","capacity":330,"reliability":83},
+    {"id":"S-IND","name":"Bharat Components","country":"IN","commodity":"Industrial components","capacity":260,"reliability":88},
+    {"id":"S-CHN","name":"Pearl River Metals","country":"CN","commodity":"Rare earths","capacity":180,"reliability":71},
+    {"id":"S-RUS","name":"Northern Energy","country":"RU","commodity":"Natural gas","capacity":410,"reliability":62},
+    {"id":"S-USA","name":"Gulf Coast Chemicals","country":"US","commodity":"Chemicals","capacity":290,"reliability":91},
+    {"id":"S-SIN","name":"Straits Electronics","country":"SG","commodity":"Semiconductors","capacity":210,"reliability":94},
+    {"id":"S-DE","name":"Rhine Machinery","country":"DE","commodity":"Machinery","capacity":170,"reliability":95}
+  ],
+  "routes": [
+    {"id":"R-HORMUZ","name":"Hormuz Energy Corridor","from":"KHP","to":"JEA","countries":["IR","AE","SA"],"capacity":480,"cost":42,"transit_days":8,"risk":81,"chokepoint":"Strait of Hormuz"},
+    {"id":"R-REDSEA","name":"Red Sea - Suez","from":"JEA","to":"RTM","countries":["AE","SA","EG","DE"],"capacity":360,"cost":58,"transit_days":21,"risk":67,"chokepoint":"Bab el-Mandeb"},
+    {"id":"R-CAPE","name":"Cape Diversion","from":"JEA","to":"RTM","countries":["AE","ZA","DE"],"capacity":260,"cost":76,"transit_days":31,"risk":42,"chokepoint":"Cape of Good Hope"},
+    {"id":"R-INDIA","name":"India - Singapore Link","from":"MUM","to":"SIN","countries":["IN","SG"],"capacity":220,"cost":34,"transit_days":9,"risk":29,"chokepoint":"Malacca Strait"},
+    {"id":"R-PACIFIC","name":"Pacific Manufacturing Lane","from":"SIN","to":"HOU","countries":["SG","CN","US"],"capacity":300,"cost":62,"transit_days":25,"risk":45,"chokepoint":"Pacific"},
+    {"id":"R-ATLANTIC","name":"North Atlantic Lane","from":"RTM","to":"HOU","countries":["NL","DE","US"],"capacity":280,"cost":49,"transit_days":15,"risk":26,"chokepoint":"North Atlantic"},
+    {"id":"R-NORTHERN","name":"Northern Eurasia Rail","from":"RU","to":"DE","countries":["RU","DE"],"capacity":120,"cost":38,"transit_days":12,"risk":76,"chokepoint":"Land corridor"},
+    {"id":"R-DAMMAM","name":"Gulf Feeder","from":"DMM","to":"JEA","countries":["SA","AE"],"capacity":190,"cost":27,"transit_days":4,"risk":58,"chokepoint":"Gulf"}
+  ],
+  "events": [
+    {"id":"EV-01","title":"Maritime insurance repricing in Gulf corridor","severity":"High","type":"Market","countries":["AE","SA","IR"],"timestamp":"2026-08-22T06:30:00Z"},
+    {"id":"EV-02","title":"Export licensing review expands for strategic minerals","severity":"Elevated","type":"Sanctions","countries":["CN","US"],"timestamp":"2026-08-21T15:10:00Z"},
+    {"id":"EV-03","title":"Port labor negotiations create schedule volatility","severity":"Moderate","type":"Logistics","countries":["DE","NL"],"timestamp":"2026-08-20T10:45:00Z"},
+    {"id":"EV-04","title":"Pipeline maintenance reduces northern gas nominations","severity":"High","type":"Infrastructure","countries":["RU","DE"],"timestamp":"2026-08-19T08:20:00Z"},
+    {"id":"EV-05","title":"Regional naval exercises raise routing uncertainty","severity":"Elevated","type":"Security","countries":["IN","SG"],"timestamp":"2026-08-18T12:00:00Z"}
+  ]
+}
