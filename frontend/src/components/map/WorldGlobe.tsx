@@ -36,7 +36,6 @@ type Props = {
   countries: Country[];
   routes: RouteData[];
   onClose: () => void;
-  scenarioActive?: boolean;
 };
 
 type ArcData = {
@@ -68,7 +67,6 @@ export default function WorldGlobe({
   countries,
   routes,
   onClose,
-  scenarioActive = false,
 }: Props) {
   const [polygons, setPolygons] = useState<PolygonData[]>([]);
   const [selectedCountry, setSelectedCountry] =
@@ -147,25 +145,15 @@ export default function WorldGlobe({
           return null;
         }
 
-        const activeRisk =
-          scenarioActive &&
-          (
-            route.id === 'R-HORMUZ' ||
-            route.id === 'R-DAMMAM'
-          )
-            ? 100
-            : route.risk;
+        
 
         return {
           startLat: from.lat,
           startLng: from.lng,
           endLat: to.lat,
           endLng: to.lng,
-          color: riskColor(activeRisk),
-          route: {
-            ...route,
-            risk: activeRisk,
-          },
+          color: riskColor(route.risk),
+          route,
         };
       })
       .filter(
@@ -174,8 +162,7 @@ export default function WorldGlobe({
       );
   }, [
     routes,
-    countriesById,
-    scenarioActive,
+    countriesById
   ]);
 
   /*
@@ -219,9 +206,7 @@ export default function WorldGlobe({
           <div className="ml-4 hidden items-center gap-2 border-l border-[#26323d] pl-4 text-[10px] uppercase tracking-widest text-[#42d3c5] md:flex">
             <span className="h-2 w-2 animate-pulse rounded-full bg-[#42d3c5]" />
 
-            {scenarioActive
-              ? 'Scenario Active'
-              : 'Live Network'}
+            Live Network
           </div>
 
         </div>
@@ -409,10 +394,7 @@ export default function WorldGlobe({
 
           arcDashGap={0.15}
 
-          arcDashAnimateTime={
-            scenarioActive
-              ? 700
-              : 1800
+          arcDashAnimateTime={1800
           }
 
           arcsTransitionDuration={800}

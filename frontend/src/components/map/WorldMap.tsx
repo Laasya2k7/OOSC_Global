@@ -206,11 +206,9 @@ function FitWorldControl() {
 export default function WorldMap({
   countries,
   routes,
-  scenarioActive = false,
 }: {
   countries: Country[];
   routes: RouteData[];
-  scenarioActive?: boolean;
 }) {
   const [ports, setPorts] = useState<Port[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
@@ -253,22 +251,7 @@ export default function WorldMap({
   /* Scenario route state */
   /* ----------------------------- */
 
-  const activeRoutes = useMemo(() => {
-    return routes.map((route) => {
-      if (
-        scenarioActive &&
-        (route.id === 'R-HORMUZ' ||
-          route.id === 'R-DAMMAM')
-      ) {
-        return {
-          ...route,
-          risk: 100,
-        };
-      }
-
-      return route;
-    });
-  }, [routes, scenarioActive]);
+  /////
 
   const selectedCountry =
     selection?.kind === 'country'
@@ -337,7 +320,7 @@ export default function WorldMap({
         {/* Routes */}
         {/* -------------------------------- */}
 
-        {activeRoutes.map((route) => {
+        {routes.map((route) => {
           const from = coords(
             route.from,
             ports,
@@ -362,10 +345,7 @@ export default function WorldMap({
                 color: riskColor(route.risk),
                 weight: highRisk ? 5 : 2.5,
                 opacity: highRisk ? 0.95 : 0.7,
-                dashArray:
-                  scenarioActive && highRisk
-                    ? '10 8'
-                    : undefined,
+                dashArray: undefined,
                 lineCap: 'round',
                 lineJoin: 'round',
               }}
@@ -579,9 +559,7 @@ export default function WorldMap({
         </span>
 
         <span className="text-[#8995a3]">
-          {scenarioActive
-            ? 'Scenario active'
-            : 'Live dataset'}
+          Live dataset
         </span>
       </div>
 
@@ -589,32 +567,6 @@ export default function WorldMap({
       {/* Scenario warning */}
       {/* -------------------------------- */}
 
-      {scenarioActive && (
-        <div
-          className="
-            pointer-events-none
-            absolute
-            left-1/2
-            top-4
-            z-[1000]
-            -translate-x-1/2
-            rounded-md
-            border
-            border-[#f16b6b]/50
-            bg-[#2a171b]/95
-            px-4
-            py-2
-            text-[10px]
-            font-bold
-            uppercase
-            tracking-[0.12em]
-            text-[#f16b6b]
-            shadow-lg
-          "
-        >
-          ⚠ Scenario disruption active
-        </div>
-      )}
 
       {/* -------------------------------- */}
       {/* Risk legend */}
@@ -892,17 +844,7 @@ export default function WorldMap({
                     ],
                     [
                       'Availability',
-                      scenarioActive &&
-                      [
-                        'R-HORMUZ',
-                        'R-DAMMAM',
-                      ].includes(
-                        (
-                          selection.item as RouteData
-                        ).id,
-                      )
-                        ? 'Unavailable'
-                        : 'Available',
+                      'Available',
                     ],
                   ].map(([label, value]) => (
                     <div

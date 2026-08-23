@@ -15,6 +15,7 @@ from .services.risk_engine import (
     update_route_risks,
     generate_live_routes
 )
+from .services.copilot_service import ask_copilot
 
 app = FastAPI(title="GeoShield API", version="0.1.0")
 
@@ -59,6 +60,9 @@ class ScenarioRequest(BaseModel):
     )
     duration_days: int = Field(default=14, ge=1, le=365)
     severity: int = Field(default=75, ge=1, le=100)
+    
+class CopilotRequest(BaseModel):
+    message: str
 
 
 @app.get("/api/health")
@@ -251,4 +255,26 @@ def analyze(payload: dict[str, Any]):
             "Insurance repricing",
             "Supplier diversification gap"
         ]
+    }
+    
+
+ 
+@app.post("/api/copilot")
+def copilot(request: CopilotRequest):
+
+    countries_data, routes_data, events_data = get_live_data()
+
+    context = {
+        "countries": countries_data,
+        "routes": routes_data,
+        "events": events_data,
+    }
+
+    answer = ask_copilot(
+        request.message,
+        context
+    )
+
+    return {
+        "answer": answer
     }

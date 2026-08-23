@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
+import Copilot from "../../components/map/Copilot.tsx";
+
 import {
   Activity,
   ArrowUpRight,
@@ -412,35 +414,10 @@ export default function Dashboard() {
               A decision layer for supply chain exposure,
               disruption, and response.
             </p>
-
           </div>
 
 
-          <div className="flex gap-2">
-
-            <button
-              className="flex items-center gap-2 border border-[#34444d] px-3 py-2 text-xs text-[#c4d0d6] transition hover:border-[#42d3c5]"
-            >
-
-              <SlidersHorizontal size={14} />
-
-              Configure view
-
-            </button>
-
-
-            <button
-              onClick={runDemo}
-              className="flex items-center gap-2 bg-[#42d3c5] px-3 py-2 text-xs font-bold text-[#071115] transition hover:bg-[#70e0d5]"
-            >
-
-              <BrainCircuit size={14} />
-
-              Run scenario
-
-            </button>
-
-          </div>
+          
 
         </div>
 
@@ -518,124 +495,105 @@ export default function Dashboard() {
         {/* MAP + ALERTS */}
         {/* ============================================= */}
 
-        <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(300px,.75fr)]">
+  <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_380px]">
+
+  {/* LEFT SIDE */}
+  <div className="space-y-5">
+
+    {/* MAP */}
+    <div className="relative">
+
+      <WorldMap
+        countries={countries}
+        routes={routes}
+        scenarioActive={Boolean(simulation)}
+      />
+
+      {/* 3D GLOBE BUTTON */}
+      <button
+        type="button"
+        onClick={() => setGlobeOpen(true)}
+        className="absolute right-4 top-4 z-[1100] flex items-center gap-2 rounded border border-[#42d3c5] bg-[#071115]/95 px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-[#42d3c5] shadow-xl backdrop-blur transition hover:bg-[#42d3c5] hover:text-[#071115]"
+      >
+        <Globe2 size={15} />
+        3D Globe
+      </button>
+
+    </div>
 
 
-          {/* MAP */}
+    {/* PRIORITY SIGNALS */}
+    <aside className="panel p-5">
 
-          <div className="relative">
+      <div className="mb-5 flex items-center justify-between">
 
-            <WorldMap
-              countries={countries}
-              routes={routes}
-              scenarioActive={
-                Boolean(simulation)
-              }
-            />
+        <h2 className="text-sm font-bold">
+          Priority signals
+        </h2>
+
+        <span className="mono text-[10px] text-[#8995a3]">
+          LIVE
+        </span>
+
+      </div>
 
 
-            {/* 3D GLOBE BUTTON */}
+      {alerts.length === 0 ? (
 
-            <button
-              type="button"
-              onClick={() =>
-                setGlobeOpen(true)
-              }
-              className="absolute right-4 top-4 z-[1100] flex items-center gap-2 rounded border border-[#42d3c5] bg-[#071115]/95 px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-[#42d3c5] shadow-xl backdrop-blur transition hover:bg-[#42d3c5] hover:text-[#071115]"
+        <div className="py-6 text-xs text-[#8995a3]">
+          No active priority alerts.
+        </div>
+
+      ) : (
+
+        alerts
+          .slice(0, 4)
+          .map((alert) => (
+
+            <div
+              key={alert.id}
+              className="mb-4 flex gap-3 border-b border-[#26323d] pb-4 last:border-0"
             >
 
-              <Globe2 size={15} />
+              <CircleAlert
+                size={16}
+                color={
+                  alert.severity === 'Critical'
+                    ? '#f16b6b'
+                    : '#f3b45b'
+                }
+              />
 
-              3D Globe
+              <div>
 
-            </button>
+                <div className="text-xs font-bold">
+                  {alert.title}
+                </div>
 
-          </div>
+                <div className="mt-1 text-[11px] leading-relaxed text-[#8995a3]">
+                  {alert.type} signal across{' '}
+                  {(alert.countries || []).join(', ')}
+                </div>
 
-
-          {/* PRIORITY SIGNALS */}
-
-          <aside className="panel p-5">
-
-            <div className="mb-5 flex items-center justify-between">
-
-              <h2 className="text-sm font-bold">
-                Priority signals
-              </h2>
-
-              <span className="mono text-[10px] text-[#8995a3]">
-                LIVE
-              </span>
-
-            </div>
-
-
-            {alerts.length === 0 ? (
-
-              <div className="py-6 text-xs text-[#8995a3]">
-                No active priority alerts.
               </div>
 
-            ) : (
-
-              alerts
-                .slice(0, 4)
-                .map((alert) => (
-
-                  <div
-                    key={alert.id}
-                    className="mb-4 flex gap-3 border-b border-[#26323d] pb-4 last:border-0"
-                  >
-
-                    <CircleAlert
-                      size={16}
-                      color={
-                        alert.severity ===
-                        'Critical'
-                          ? '#f16b6b'
-                          : '#f3b45b'
-                      }
-                    />
-
-
-                    <div>
-
-                      <div className="text-xs font-bold">
-                        {alert.title}
-                      </div>
-
-
-                      <div className="mt-1 text-[11px] leading-relaxed text-[#8995a3]">
-
-                        {alert.type} signal across{' '}
-
-                        {(
-                          alert.countries ||
-                          []
-                        ).join(', ')}
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                ))
-
-            )}
-
-
-            <div className="mt-3 flex items-center gap-2 text-xs text-[#42d3c5]">
-
-              View all intelligence
-
-              <ChevronRight size={13} />
-
             </div>
 
-          </aside>
+          ))
 
-        </div>
+      )}
+
+    </aside>
+
+  </div>
+
+
+  {/* RIGHT SIDE — COPILOT */}
+  <div className="xl:sticky xl:top-6">
+    <Copilot />
+  </div>
+
+</div>
 
 
         {/* ============================================= */}
@@ -686,7 +644,7 @@ export default function Dashboard() {
                   <div
                     key={route.id}
                     className="grid grid-cols-[1fr_auto_auto] items-center gap-4 border-t border-[#26323d] pt-3"
-                  >
+                    >
 
                     <div>
 
@@ -749,70 +707,11 @@ export default function Dashboard() {
 
             </div>
 
-          </section>
-
-
-          {/* AI BRIEF */}
-
-          <section className="panel p-5">
-
-            <div className="mb-4 flex items-center gap-2">
-
-              <BrainCircuit
-                size={17}
-                color="#42d3c5"
-              />
-
-              <h2 className="text-sm font-bold">
-                AI intelligence brief
-              </h2>
-
-            </div>
-
-
-            <p className="text-sm leading-7 text-[#c4d0d6]">
-
-              {aiAnalysis?.summary ||
-                'Loading live intelligence analysis...'}
-
-            </p>
-
-
-            {aiAnalysis?.drivers &&
-              aiAnalysis.drivers.length >
-                0 && (
-
-                <div className="mt-5 border-l-2 border-[#42d3c5] pl-3 text-xs leading-6 text-[#8995a3]">
-
-                  <div className="mb-1 font-bold text-[#c4d0d6]">
-                    Key drivers
-                  </div>
-
-
-                  {aiAnalysis.drivers.map(
-                    (driver, index) => (
-
-                      <div key={index}>
-                        • {driver}
-                      </div>
-
-                    )
-                  )}
-
-                </div>
-
-              )}
-
-
-            <button className="mt-5 flex items-center gap-2 text-xs font-bold text-[#42d3c5] hover:text-white">
-
-              Open analysis
-
-              <ArrowUpRight size={14} />
-
-            </button>
+            
 
           </section>
+
+          
 
         </div>
 
@@ -924,6 +823,7 @@ export default function Dashboard() {
 
                 <div className="text-sm font-extrabold tracking-[.14em]">
                   GEOSHIELD
+                  
                 </div>
 
                 <div className="mono text-[9px] text-[#8995a3]">
@@ -987,6 +887,8 @@ export default function Dashboard() {
               {' · '}
               {routes.length} corridors
 
+               
+
             </div>
 
           </div>
@@ -994,6 +896,8 @@ export default function Dashboard() {
         </div>
 
       )}
+
+     
 
     </main>
 
